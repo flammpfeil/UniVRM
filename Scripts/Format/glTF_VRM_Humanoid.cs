@@ -226,6 +226,23 @@ namespace VRM
             })
             .Where(x => x.humanBone!= HumanBodyBones.LastBone)
             .ToArray();
+            
+            bool _UseOldMapping = true;
+            if (_UseOldMapping)
+            {
+                int idxChest = Array.FindIndex(description.human, (bone => bone.humanBone == HumanBodyBones.Chest));
+                int idxUChest = Array.FindIndex(description.human, (bone => bone.humanBone == HumanBodyBones.UpperChest));
+                if (0 <= idxChest && 0 <= idxUChest)
+                {
+                    description.human[idxChest].humanBone = HumanBodyBones.LastBone;
+                    description.human[idxUChest].humanBone = HumanBodyBones.Chest;
+                }
+
+                description.human = description.human
+                    .Where(x => x.humanBone != HumanBodyBones.LastBone)
+                    .ToArray();
+            }
+            
             return description;
         }
     }
